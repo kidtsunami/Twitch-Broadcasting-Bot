@@ -1,0 +1,66 @@
+{
+    "streams": [
+        {
+            "_id": 19998280624,
+            "game": "Heroes of the Storm",
+            "viewers": 22160,
+            "created_at": "2016-03-05T10:38:02Z",
+            "video_height": 0,
+            "average_fps": 60.5714285714,
+            "delay": 0,
+            "is_playlist": false,
+            "_links": {
+                "self": "https://api.twitch.tv/kraken/streams/channel4"
+            },
+            "preview": {
+                "small": "http://static-cdn.jtvnw.net/previews-ttv/live_user_channel4-80x45.jpg",
+                "medium": "http://static-cdn.jtvnw.net/previews-ttv/live_user_channel4-320x180.jpg",
+                "large": "http://static-cdn.jtvnw.net/previews-ttv/live_user_channel4-640x360.jpg",
+                "template": "http://static-cdn.jtvnw.net/previews-ttv/live_user_channel4-{width}x{height}.jpg"
+            },
+            "channel": {
+                "mature": false,
+                "status": "Fnatic vs. Liquid - ESL Heroes of the Storm Spring Regional Katowice - Group B Winners Match",
+                "broadcaster_language": "en",
+                "display_name": "channel4",
+                "game": "Heroes of the Storm",
+                "language": "en",
+                "_id": 80380440,
+                "name": "channel4",
+                "created_at": "2015-01-20T13:25:24Z",
+                "updated_at": "2016-03-05T20:08:45Z",
+                "delay": null,
+                "logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/channel4-profile_image-2f5c2e0a7c077df1-300x300.png",
+                "banner": null,
+                "video_banner": "https://static-cdn.jtvnw.net/jtv_user_pictures/channel4-channel_offline_image-5c787ac2274cce01-1920x1080.jpeg",
+                "background": null,
+                "profile_banner": "https://static-cdn.jtvnw.net/jtv_user_pictures/channel4-profile_banner-572863147147bba7-480.jpeg",
+                "profile_banner_background_color": "#030a38",
+                "partner": true,
+                "url": "http://www.twitch.tv/channel4",
+                "views": 2297514,
+                "followers": 46446,
+                "_links": {
+                    "self": "https://api.twitch.tv/kraken/channels/channel4",
+                    "follows": "https://api.twitch.tv/kraken/channels/channel4/follows",
+                    "commercial": "https://api.twitch.tv/kraken/channels/channel4/commercial",
+                    "stream_key": "https://api.twitch.tv/kraken/channels/channel4/stream_key",
+                    "chat": "https://api.twitch.tv/kraken/chat/channel4",
+                    "features": "https://api.twitch.tv/kraken/channels/channel4/features",
+                    "subscriptions": "https://api.twitch.tv/kraken/channels/channel4/subscriptions",
+                    "editors": "https://api.twitch.tv/kraken/channels/channel4/editors",
+                    "teams": "https://api.twitch.tv/kraken/channels/channel4/teams",
+                    "videos": "https://api.twitch.tv/kraken/channels/channel4/videos"
+                }
+            }
+        }
+    ],
+    "_total": 1,
+    "_links": {
+        "self": "https://api.twitch.tv/kraken/streams?channel=channel1%2Cchannel2%2Cchannel4&limit=25&offset=0",
+        "next": "https://api.twitch.tv/kraken/streams?channel=channel1%2Cchannel2%2Cchannel4&limit=25&offset=25",
+        "featured": "https://api.twitch.tv/kraken/streams/featured",
+        "summary": "https://api.twitch.tv/kraken/streams/summary",
+        "followed": "https://api.twitch.tv/kraken/streams/followed"
+    }
+}

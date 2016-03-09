@@ -1,0 +1,60 @@
+{
+  "stream": {
+    "_id": 1231,
+    "game": "A Game",
+    "viewers": 200,
+    "created_at": "2016-03-04T10:35:33Z",
+    "video_height": 0,
+    "average_fps": 60.8571428571,
+    "delay": 0,
+    "is_playlist": false,
+    "_links": {
+      "self": "https://api.twitch.tv/kraken/streams/channel1"
+    },
+    "preview": {
+      "small": "http://static-cdn.jtvnw.net/previews-ttv/live_user_channel1-80x45.jpg",
+      "medium": "http://static-cdn.jtvnw.net/previews-ttv/live_user_channel1-320x180.jpg",
+      "large": "http://static-cdn.jtvnw.net/previews-ttv/live_user_channel1-640x360.jpg",
+      "template": "http://static-cdn.jtvnw.net/previews-ttv/live_user_channel1-{width}x{height}.jpg"
+    },
+    "channel": {
+      "mature": false,
+      "status": "LIVE",
+      "broadcaster_language": "en",
+      "display_name": "channel1",
+      "game": "A Game",
+      "language": "en",
+      "_id": 123455,
+      "name": "channel1",
+      "created_at": "2012-06-11T13:36:21Z",
+      "updated_at": "2016-03-04T15:45:06Z",
+      "delay": null,
+      "logo": "https://static-cdn.jtvnw.net/jtv_user_pictures/channel1-profile_image-546a0c1883798a41-300x300.jpeg",
+      "banner": null,
+      "video_banner": "https://static-cdn.jtvnw.net/jtv_user_pictures/channel1-channel_offline_image-c9f885982daa1c83-1920x1080.png",
+      "background": null,
+      "profile_banner": "https://static-cdn.jtvnw.net/jtv_user_pictures/channel1-profile_banner-0d10712c29995dc2-480.jpeg",
+      "profile_banner_background_color": "#000000",
+      "partner": true,
+      "url": "http://www.twitch.tv/channel1",
+      "views": 135576495,
+      "followers": 1325495,
+      "_links": {
+        "self": "http://api.twitch.tv/kraken/channels/channel1",
+        "follows": "http://api.twitch.tv/kraken/channels/channel1/follows",
+        "commercial": "http://api.twitch.tv/kraken/channels/channel1/commercial",
+        "stream_key": "http://api.twitch.tv/kraken/channels/channel1/stream_key",
+        "chat": "http://api.twitch.tv/kraken/chat/channel1",
+        "features": "http://api.twitch.tv/kraken/channels/channel1/features",
+        "subscriptions": "http://api.twitch.tv/kraken/channels/channel1/subscriptions",
+        "editors": "http://api.twitch.tv/kraken/channels/channel1/editors",
+        "teams": "http://api.twitch.tv/kraken/channels/channel1/teams",
+        "videos": "http://api.twitch.tv/kraken/channels/channel1/videos"
+      }
+    }
+  },
+  "_links": {
+    "self": "https://api.twitch.tv/kraken/streams/channel1",
+    "channel": "https://api.twitch.tv/kraken/channels/channel1"
+  }
+}

@@ -1,0 +1,23 @@
+{
+	"version": "0.1.0",
+	"configurations": [
+		{
+            "name": "mocha",
+            "type": "node",
+            "program": "${workspaceRoot}/node_modules/mocha/bin/mocha",
+            "stopOnEntry": false,
+            "args": ["--no-exit"], //you can specify paths to specific tests here
+            "cwd": ".",
+            "runtimeExecutable": null,
+            "env": {
+                "NODE_ENV": "testing"
+            }
+        },
+        {
+            "name": "Attach to Node",
+            "type": "node",
+            "request": "attach",
+            "port": 5858
+        }
+	]
+}
