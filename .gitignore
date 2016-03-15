@@ -40,4 +40,4 @@ typings
 .env
 
 # Ignoring scratch file for investigations
-scratch.js 
+scratch.js
