@@ -1,3 +1,4 @@
+require('./overload-environment.js');
 var SlackWebhookClient = require('./slack-webhook-client.js');
 var TwitchClient = require('./twitch-client.js');
 var twitchChannelsToCheck = process.env.TWITCH_BROADCASTING_BOT_CHANNELS_TO_CHECK.split(',');
