@@ -4,6 +4,7 @@
   "description": "A bot that queries Twitch and posts to a Slack WebHook when a channel has started broadcasting.",
   "main": "main.js",
   "dependencies": {
+    "redis": "2.5.1",
     "request": "2.69.0",
     "url-join": "0.0.1"
   },
