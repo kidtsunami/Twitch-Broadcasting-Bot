@@ -12,4 +12,4 @@ twitchClient.getStreams(twitchChannelsToCheck, function(error, streamResponse){
         statusText += '\n*' + stream.channel.display_name + '* is broadcasting ' + stream.game;
     });
     slackWebhookClient.postMessage({ text: statusText }, function(){});
-}, this); 
+}); 
