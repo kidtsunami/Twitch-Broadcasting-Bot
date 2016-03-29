@@ -4,6 +4,7 @@
   "description": "A bot that queries Twitch and posts to a Slack WebHook when a channel has started broadcasting.",
   "main": "main.js",
   "dependencies": {
+    "bluebird": "3.3.4",
     "redis": "2.5.1",
     "request": "2.69.0",
     "url-join": "0.0.1"
@@ -13,7 +14,8 @@
     "istanbul": "0.4.2",
     "mocha": "2.4.5",
     "nock": "7.2.2",
-    "node-env-file": "0.1.8"
+    "node-env-file": "0.1.8",
+    "redis-mock": "0.5.1"
   },
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha test",
