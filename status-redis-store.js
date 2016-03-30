@@ -1,5 +1,3 @@
-var Bluebird = require('bluebird');
-
 function StatusRedisStore(redisClient){
     this.redisClient = redisClient;
 }
