@@ -1,12 +1,11 @@
+var Bluebird = require('bluebird');
 
 function StatusRedisStore(redisClient){
     this.redisClient = redisClient;
 }
 
 StatusRedisStore.prototype.getStatus = function(){
-    return this.redisClient.getAsync('status').then(function(result){
-        return JSON.parse(result);
-    });
+    return this.redisClient.getAsync('status').then(JSON.parse);
 };
 
 StatusRedisStore.prototype.setStatus = function(status){
