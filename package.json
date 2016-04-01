@@ -29,5 +29,9 @@
     "webhook"
   ],
   "author": "David Helmer (@kidtsunami)",
-  "license": "ISC"
+  "license": "ISC",
+  "engines": {
+    "node": "5.0.0",
+    "npm": "2.12.1"
+  }
 }

@@ -1,8 +1,6 @@
 machine:
   services:
     - redis
-  node:
-    version: 5.0.0
 test:
   override:
     - mocha test --reporter mocha-junit-reporter --reporter-options mochaFile=$CIRCLE_TEST_REPORTS/mocha/junit.xml
