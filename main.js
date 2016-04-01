@@ -1,14 +1,23 @@
+require('./overload-environment.js');
+var Bluebird = require('bluebird');
+var redis = require('redis');
+Bluebird.promisifyAll(redis.RedisClient.prototype);
+
+var StatusRedisStore = require('./status-redis-store.js');
 var SlackWebhookClient = require('./slack-webhook-client.js');
 var TwitchClient = require('./twitch-client.js');
-var twitchChannelsToCheck = process.env.TWITCH_BROADCASTING_BOT_CHANNELS_TO_CHECK.split(',');
+var TwitchBroadcastingBot = require('./twitch-broadcasting-bot.js');
 
-var slackWebhookClient = new SlackWebhookClient(process.env.TWITCH_BROADCASTING_BOT_SLACK_WEBHOOK_URL);
-var twitchClient = new TwitchClient(process.env.TWITCH_BROADCASTING_BOT_TWITCH_BASE_URL);
+var twitchChannelsToCheck = process.env.CHANNELS_TO_CHECK.split(',');
+var slackClient = new SlackWebhookClient(process.env.SLACK_WEBHOOK_URL);
+var twitchClient = new TwitchClient(process.env.TWITCH_BASE_URL);
+var redisClient = redis.createClient(process.env.REDIS_URL);
+var statusStore = new StatusRedisStore(redisClient);
 
-twitchClient.getStreams(twitchChannelsToCheck, function(error, streamResponse){
-    var statusText = 'Checking if the following channels are broadcasting: [' + twitchChannelsToCheck + ']\n';
-    streamResponse.streams.forEach(function(stream) {
-        statusText += '\n*' + stream.channel.display_name + '* is broadcasting ' + stream.game;
-    });
-    slackWebhookClient.postMessage({ text: statusText }, function(){});
-}, this); 
+var twitchBroadcastingBot = new TwitchBroadcastingBot(twitchClient, slackClient, statusStore);
+
+twitchBroadcastingBot.postChangesToSlack(twitchChannelsToCheck, cleanUp);
+
+function cleanUp(){
+    redisClient.quit();
+}

@@ -38,3 +38,9 @@ typings
 
 # Local environment variables
 .env
+
+# Ignoring scratch file for investigations
+scratch.js
+
+# Ignoring local redis db
+dump.rdb
