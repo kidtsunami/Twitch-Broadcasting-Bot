@@ -6,3 +6,8 @@ machine:
 test:
   override:
     - mocha test --reporter mocha-junit-reporter --reporter-options mochaFile=$CIRCLE_TEST_REPORTS/mocha/junit.xml
+deployment:
+  production:
+    branch: production
+    heroku:
+        appname: $HEROKU_APP_PRODUCTION
