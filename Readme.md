@@ -2,6 +2,8 @@ Twitch Broadcasting Bot
 =======================
 A bot that queries Twitch and posts to a Slack WebHook when a channel has started broadcasting.
 
+[![Circle CI](https://circleci.com/gh/kidtsunami/Twitch-Broadcasting-Bot.svg?style=svg)](https://circleci.com/gh/kidtsunami/Twitch-Broadcasting-Bot)
+
 Environment Variables
 ---------------------
 |Name|Description|Example|
