@@ -31,7 +31,6 @@
   "author": "David Helmer (@kidtsunami)",
   "license": "ISC",
   "engines": {
-    "node": "5.0.0",
-    "npm": "2.12.1"
+    "node": "5.0.0"
   }
 }
