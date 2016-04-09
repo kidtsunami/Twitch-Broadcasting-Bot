@@ -29,29 +29,26 @@ function testGetStatus(){
     });
     
     it('returns null when empty', function(testDone){
-        statusRedisStore.getStatus().done(confirmStatusIsNull(testDone));
+        statusRedisStore.getStatus()
+        .then(confirmStatusIsNull)
+        .done(testDone);
     });
     
     it('returns data if there', function(testDone){
         redisClient.setAsync('status', JSON.stringify(basicData))
         .bind(statusRedisStore)
         .then(statusRedisStore.getStatus)
-        .done(confirmStatusIsBasicData(testDone));
+        .then(confirmStatusIsBasicData)
+        .done(testDone);
     });
 }
 
-function confirmStatusIsNull(done){
-    return function(status){
-        expect(status).to.eql(null);
-        done(); 
-    }
+function confirmStatusIsNull(status){
+    expect(status).to.eql(null);
 }
 
-function confirmStatusIsBasicData(done){
-    return function(status){
-        expect(status).to.eql(basicData);
-        done(); 
-    }
+function confirmStatusIsBasicData(status){
+    expect(status).to.eql(basicData); 
 }
 
 function testSetStatus(statusRedisStore){
@@ -63,7 +60,8 @@ function testSetStatus(statusRedisStore){
         it('sets the status', function(testDone){
             statusRedisStore.setStatus(basicData)
             .then(redisClient.getAsync('status'))
-            .done(confirmStatusIsBasicData(testDone));
+            .then(confirmStatusIsBasicData)
+            .done(testDone);
         });
     };
 }
