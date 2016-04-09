@@ -13,15 +13,20 @@ describe('slack webhook client', function(){
             var basicMessage = {
                 text: 'test message'
             };
-            nock('https://hooks.slack.com/')
+            var slackNock = nock('https://hooks.slack.com/')
                 .post('/webhookpath', basicMessage)
                 .reply(200, 'OK');
-            it('should have null error', function(done){
-                client.postMessage(basicMessage, function(error){
-                    expect(error).to.not.be.ok();
-                    done();
-                }); 
+            it('should have null error', function(testDone){
+                client.postMessage(basicMessage)
+                    .then(expectNockIsDone(slackNock))
+                    .done(testDone);
             });
         });
     });
 });
+
+function expectNockIsDone(expectedNock){
+    return function(){
+        expect(expectedNock.isDone()).to.be.true;
+    };
+}

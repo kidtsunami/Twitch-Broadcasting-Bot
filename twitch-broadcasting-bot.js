@@ -28,9 +28,9 @@ TwitchBroadcastingBot.prototype.postChangesToSlack = function(twitchChannelsToCh
                     streamComparison.stoppedStreams.forEach(function(stream) {
                         statusText += '\n*' + stream.channel.display_name + '* stopped broadcasting ' + stream.game;
                     });
-                    slackClient.postMessage({ text: statusText }, function(){
-                        statusStore.setStatus(currentStatus).done(donePosting);
-                    });
+                    slackClient.postMessage({ text: statusText })
+                        .then(statusStore.setStatus(currentStatus))
+                        .done(donePosting);
                 } else {
                     console.log('there were no changes');
                     statusStore.setStatus(currentStatus).done(donePosting);
