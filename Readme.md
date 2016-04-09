@@ -25,3 +25,6 @@ Depends on
 Using redis to store the state so the bot only posts about changes in the state of channels.
 
 [Redis Quickstart](http://redis.io/topics/quickstart)
+
+### Bluebird
+Uses [Bluebird](http://bluebirdjs.com/docs/getting-started.html) for [Promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
