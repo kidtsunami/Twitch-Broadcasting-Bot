@@ -1,5 +1,5 @@
 var expect = require('expect.js');
-var streamComparer = require('../stream-comparer.js');
+var streamComparer = require('../lib/stream-comparer.js');
 
 describe("stream comparer", testStreamComparer);
 

@@ -1,5 +1,5 @@
 var expect = require('expect.js');
-var StatusRedisStore = require('../status-redis-store.js');
+var StatusRedisStore = require('../lib/status-redis-store.js');
 var redis = require('redis-mock');
 var redisClient = redis.createClient();
 var Bluebird = require('bluebird');

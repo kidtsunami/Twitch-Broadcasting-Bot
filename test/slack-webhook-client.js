@@ -1,4 +1,4 @@
-var SlackWebhookClient = require('../slack-webhook-client.js');
+var SlackWebhookClient = require('../lib/slack-webhook-client.js');
 var expect = require('expect.js');
 var nock = require('nock');
 
