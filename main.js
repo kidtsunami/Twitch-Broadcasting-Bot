@@ -16,7 +16,7 @@ var statusStore = new StatusRedisStore(redisClient);
 
 var twitchBroadcastingBot = new TwitchBroadcastingBot(twitchClient, slackClient, statusStore);
 
-twitchBroadcastingBot.postChangesToSlack(twitchChannelsToCheck, cleanUp);
+twitchBroadcastingBot.postChangesToSlack(twitchChannelsToCheck).done(cleanUp);
 
 function cleanUp(){
     redisClient.quit();
