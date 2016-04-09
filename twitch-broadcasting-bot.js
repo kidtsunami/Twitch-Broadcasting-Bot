@@ -6,10 +6,10 @@ function TwitchBroadcastingBot(twitchClient, slackClient, statusStore){
     this.statusStore = statusStore;
 }
 
-TwitchBroadcastingBot.prototype.postChangesToSlack = function(twitchChannelsToCheck, donePosting){
-    this.statusStore.getStatus()
+TwitchBroadcastingBot.prototype.postChangesToSlack = function(twitchChannelsToCheck){
+    return this.statusStore.getStatus()
         .bind(this)
-        .done(function(previousStatus){
+        .then(function(previousStatus){
             var slackClient = this.slackClient;
             var twitchClient = this.twitchClient;
             var statusStore = this.statusStore;
@@ -17,25 +17,25 @@ TwitchBroadcastingBot.prototype.postChangesToSlack = function(twitchChannelsToCh
             if(previousStatus == null){
                 previousStatus = [];
             }
-            twitchClient.getStreams(twitchChannelsToCheck, function(error, streamResponse){
-                var currentStatus = streamResponse.streams;
-                var streamComparison = streamComparer.compareStreams(previousStatus, currentStatus);
-                if(streamComparison.startedStreams.length > 0 || streamComparison.stoppedStreams.length > 0){
-                    var statusText = '';
-                    streamComparison.startedStreams.forEach(function(stream) {
-                        statusText += '\n*' + stream.channel.display_name + '* started broadcasting ' + stream.game;
-                    });
-                    streamComparison.stoppedStreams.forEach(function(stream) {
-                        statusText += '\n*' + stream.channel.display_name + '* stopped broadcasting ' + stream.game;
-                    });
-                    slackClient.postMessage({ text: statusText })
-                        .then(statusStore.setStatus(currentStatus))
-                        .done(donePosting);
-                } else {
-                    console.log('there were no changes');
-                    statusStore.setStatus(currentStatus).done(donePosting);
-                }
-            });
+            return twitchClient.getStreams(twitchChannelsToCheck)
+                .then(function (streamResponse){
+                    var currentStatus = streamResponse.streams;
+                    var streamComparison = streamComparer.compareStreams(previousStatus, currentStatus);
+                    if(streamComparison.startedStreams.length > 0 || streamComparison.stoppedStreams.length > 0){
+                        var statusText = '';
+                        streamComparison.startedStreams.forEach(function(stream) {
+                            statusText += '\n*' + stream.channel.display_name + '* started broadcasting ' + stream.game;
+                        });
+                        streamComparison.stoppedStreams.forEach(function(stream) {
+                            statusText += '\n*' + stream.channel.display_name + '* stopped broadcasting ' + stream.game;
+                        });
+                        return slackClient.postMessage({ text: statusText })
+                            .then(statusStore.setStatus(currentStatus));
+                    } else {
+                        console.log('there were no changes');
+                        return statusStore.setStatus(currentStatus);
+                    }
+                });
         });
 };
 

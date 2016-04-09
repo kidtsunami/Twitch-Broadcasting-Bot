@@ -63,10 +63,7 @@ function testPostChangesToSlack(){
             it('posts stopped broadcasting to slack', confirmStoppedBroadcastingToSlack(twitchNock));
         });
     });
-    
-    describe('when statusStore has channel 4 not streaming', function(){
-        
-    });
+
 }
 
 function nockTwitchIsBroadcastingStream(){
@@ -95,11 +92,12 @@ function confirmStartedBroadcastingToSlack(twitchNock){
     return function(testDone){
         var slackMessage = '{"text":"\\n*channel4* started broadcasting Heroes of the Storm"}';
         var slackNock = nockSlackMessage(slackMessage);
-        twitchBroadcastingBot.postChangesToSlack(channelsToRequest, function(){
-            expect(twitchNock.isDone()).to.be.true;
-            expect(slackNock.isDone()).to.be.true;
-            testDone();
-        });
+        twitchBroadcastingBot.postChangesToSlack(channelsToRequest)
+            .then(function(){
+                expect(twitchNock.isDone()).to.be.true;
+                expect(slackNock.isDone()).to.be.true;
+            })
+            .done(testDone);
     }
 }
 
@@ -107,20 +105,22 @@ function confirmStoppedBroadcastingToSlack(twitchNock){
     return function(testDone){
         var slackMessage = '{"text":"\\n*channel4* stopped broadcasting Heroes of the Storm"}';
         var slackNock = nockSlackMessage(slackMessage);
-        twitchBroadcastingBot.postChangesToSlack(channelsToRequest, function(){
-            expect(twitchNock.isDone()).to.be.true;
-            expect(slackNock.isDone()).to.be.true;
-            testDone();
-        });
+        twitchBroadcastingBot.postChangesToSlack(channelsToRequest)
+            .then(function(){
+                expect(twitchNock.isDone()).to.be.true;
+                expect(slackNock.isDone()).to.be.true;
+            })
+            .done(testDone);
     }
 }
 
 function confirmNothingBroadcastedToSlack(twitchNock){
     return function(testDone){
-        twitchBroadcastingBot.postChangesToSlack(channelsToRequest, function(){
-            expect(twitchNock.isDone()).to.be.true;
-            testDone();
-        });
+        twitchBroadcastingBot.postChangesToSlack(channelsToRequest)
+            .then(function(){
+                expect(twitchNock.isDone()).to.be.true;
+            })
+            .done(testDone);
     }
 }
 
