@@ -20,48 +20,48 @@ function testStatusRedisStore(){
 }
 
 function flushRedis(){
-    redisClient.flushdb();
+  redisClient.flushdb();
 }
 
 function testGetStatus(){
-    it('exists as a public method', function(){
-        expect(typeof statusRedisStore.getStatus).to.eql('function');
-    });
-    
-    it('returns null when empty', function(testDone){
-        statusRedisStore.getStatus()
-        .then(confirmStatusIsNull)
-        .done(testDone);
-    });
-    
-    it('returns data if there', function(testDone){
-        redisClient.setAsync('status', JSON.stringify(basicData))
-        .bind(statusRedisStore)
-        .then(statusRedisStore.getStatus)
-        .then(confirmStatusIsBasicData)
-        .done(testDone);
-    });
+  it('exists as a public method', function(){
+    expect(typeof statusRedisStore.getStatus).to.eql('function');
+  });
+  
+  it('returns null when empty', function(testDone){
+    statusRedisStore.getStatus()
+    .then(confirmStatusIsNull)
+    .done(testDone);
+  });
+  
+  it('returns data if there', function(testDone){
+    redisClient.setAsync('status', JSON.stringify(basicData))
+    .bind(statusRedisStore)
+    .then(statusRedisStore.getStatus)
+    .then(confirmStatusIsBasicData)
+    .done(testDone);
+  });
 }
 
 function confirmStatusIsNull(status){
-    expect(status).to.eql(null);
+  expect(status).to.eql(null);
 }
 
 function confirmStatusIsBasicData(status){
-    expect(status).to.eql(basicData); 
+  expect(status).to.eql(basicData); 
 }
 
 function testSetStatus(statusRedisStore){
-    return function(){
-        it('exists as a public method', function(){
-            expect(typeof statusRedisStore.setStatus).to.eql('function');
-        });
-        
-        it('sets the status', function(testDone){
-            statusRedisStore.setStatus(basicData)
-            .then(redisClient.getAsync('status'))
-            .then(confirmStatusIsBasicData)
-            .done(testDone);
-        });
-    };
+  return function(){
+    it('exists as a public method', function(){
+      expect(typeof statusRedisStore.setStatus).to.eql('function');
+    });
+    
+    it('sets the status', function(testDone){
+      statusRedisStore.setStatus(basicData)
+      .then(redisClient.getAsync('status'))
+      .then(confirmStatusIsBasicData)
+      .done(testDone);
+    });
+  };
 }

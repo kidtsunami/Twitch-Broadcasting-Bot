@@ -19,5 +19,5 @@ var twitchBroadcastingBot = new TwitchBroadcastingBot(twitchClient, slackClient,
 twitchBroadcastingBot.postChangesToSlack(twitchChannelsToCheck).done(cleanUp);
 
 function cleanUp(){
-    redisClient.quit();
+  redisClient.quit();
 }
