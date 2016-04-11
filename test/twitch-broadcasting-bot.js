@@ -1,13 +1,13 @@
 var expect = require('expect.js');
 var nock = require('nock');
 
-var SlackWebhookClient = require('../lib/slack-webhook-client.js');
-var TwitchClient = require('../lib/twitch-client.js');
+var SlackWebhookClient = require('../app/slack-webhook-client.js');
+var TwitchClient = require('../app/twitch-client.js');
 var Bluebird = require('bluebird');
 var redis = require('redis-mock');
 var redisClient = redis.createClient();
 Bluebird.promisifyAll(redis.RedisClient.prototype);
-var StatusRedisStore = require('../lib/status-redis-store.js');
+var StatusRedisStore = require('../app/status-redis-store.js');
 
 var testTwitchBaseURL = 'https://test.api.twitch.tv/kraken/';
 var testSlackBaseURL = 'https://hooks.slack.com/';
@@ -16,7 +16,7 @@ var twitchClient = new TwitchClient(testTwitchBaseURL);
 var slackClient = new SlackWebhookClient(testSlackBaseURL + 'webhookpath');
 var statusStore = new StatusRedisStore(redisClient);
 
-var TwitchBroadcastingBot = require('../lib/twitch-broadcasting-bot.js');
+var TwitchBroadcastingBot = require('../app/twitch-broadcasting-bot.js');
 var twitchBroadcastingBot = new TwitchBroadcastingBot(twitchClient, slackClient, statusStore);
 
 var channelsToRequest = ['channel1','channel2','channel3','channel4'];

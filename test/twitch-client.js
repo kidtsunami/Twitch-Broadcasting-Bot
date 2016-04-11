@@ -1,4 +1,4 @@
-var TwitchClient = require('../lib/twitch-client.js');
+var TwitchClient = require('../app/twitch-client.js');
 var expect = require('expect.js');
 var nock = require('nock');
 
