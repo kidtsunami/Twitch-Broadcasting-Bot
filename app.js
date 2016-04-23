@@ -5,6 +5,9 @@ var app = express();
 app.use(require('express-promise')());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+var validTeamId = process.env.TEAM_ID;
+var validToken = process.env.COMMAND_TOKEN;
+
 app.get('/command', function(request, response){
   if(request.query.check_ssl == '1'){
     response.sendStatus(200);
@@ -15,17 +18,21 @@ app.get('/command', function(request, response){
 
 
 app.post('/command', function(request, response){
-  console.log(request.body);
-  console.log(request.headers);
   if(headersAreInvalid(request)){
     response.sendStatus(406);
+  } else if(tokenAndTeamAreInvalid(request.body.token, request.body.team_id)) {
+    response.sendStatus(401);  
   } else {
-    response.sendStatus(200);  
+    response.sendStatus(200);
   }
 });
 
 function headersAreInvalid(request){
   return request.headers['content-type'] !== 'application/x-www-form-urlencoded';
+}
+
+function tokenAndTeamAreInvalid(token, team_id){
+  return token !== validToken || team_id !== validTeamId;
 }
 
 var server = app.listen(3000, function(){

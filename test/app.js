@@ -1,6 +1,9 @@
 var expect = require('expect.js');
 var request = require('supertest');
 
+process.env.TEAM_ID = 'T0001';
+process.env.COMMAND_TOKEN = 'validtoken';
+
 describe('command app', function(){
   var server;
   beforeEach(function(){
@@ -37,6 +40,55 @@ describe('command app', function(){
             .post('/command')
             .set('content-type', 'application/invalid')
             .expect(406, testDone);
+        });
+      });
+      describe('with valid headers', function(){
+        var contentType = 'application/x-www-form-urlencoded';
+        var commandForm;
+        
+        beforeEach(function(){
+          commandForm = {
+            token: 'validtoken',
+            team_id: 'T0001',
+            team_domain: 'example',
+            channel_id: 'C2147483705',
+            channel_name: 'test',
+            user_id: 'U2147483697',
+            user_name: 'Steve',
+            command: '/weather',
+            text: '94070',
+            response_url: 'https://hooks.slack.com/commands/1234/5678' 
+          };
+        });
+        
+        describe('with invalidToken', function(){
+          
+          beforeEach(function(){
+            commandForm.token = 'invalidtoken';
+          });
+          
+          it('should return 401', function(testDone){
+            request(server)
+              .post('/command')
+              .type('form')
+              .send(commandForm)
+              .expect(401, testDone);
+          });
+        });
+        
+        describe('with invalidTeam', function(){
+          
+          beforeEach(function(){
+            commandForm.team_id = 'invalidteamid';
+          });
+          
+          it('should return 401', function(testDone){
+            request(server)
+              .post('/command')
+              .type('form')
+              .send(commandForm)
+              .expect(401, testDone);
+          });
         });
       });
     });
