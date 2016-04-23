@@ -5,11 +5,13 @@
   "main": "main.js",
   "dependencies": {
     "bluebird": "3.3.4",
+    "body-parser": "1.15.0",
     "express": "4.13.4",
     "express-promise": "0.4.0",
     "redis": "2.5.1",
     "request": "2.69.0",
     "request-promise": "2.0.1",
+    "sinon": "1.17.3",
     "url-join": "0.0.1"
   },
   "devDependencies": {
