@@ -16,8 +16,17 @@ app.get('/command', function(request, response){
 
 app.post('/command', function(request, response){
   console.log(request.body);
-  response.sendStatus(200);
+  console.log(request.headers);
+  if(headersAreInvalid(request)){
+    response.sendStatus(406);
+  } else {
+    response.sendStatus(200);  
+  }
 });
+
+function headersAreInvalid(request){
+  return request.headers['content-type'] !== 'application/x-www-form-urlencoded';
+}
 
 var server = app.listen(3000, function(){
   console.log('example app');
