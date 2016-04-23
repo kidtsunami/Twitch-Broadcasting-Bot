@@ -31,15 +31,11 @@ describe('command app', function(){
             .expect(406, testDone);
         });
       });
-      describe('with incorrect header', function(){
-        var invalidHeaders = {
-          reqheaders: {
-            'content-type': 'application/invalid'
-          }
-        };
+      describe('with invalid headers', function(){
         it('should return 406', function(testDone){
-          request(server, invalidHeaders)
+          request(server)
             .post('/command')
+            .set('content-type', 'application/invalid')
             .expect(406, testDone);
         });
       });
