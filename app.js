@@ -1,9 +1,11 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-var app = express();
 
+var app = express();
 app.use(require('express-promise')());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+var SlackCommandRouter = require('./app/slack-command-router.js');
 
 var validTeamId = process.env.TEAM_ID;
 var validToken = process.env.COMMAND_TOKEN;
@@ -23,6 +25,7 @@ app.post('/command', function(request, response){
   } else if(tokenAndTeamAreInvalid(request.body.token, request.body.team_id)) {
     response.sendStatus(401);  
   } else {
+    handleCommand(request.body);
     response.sendStatus(200);
   }
 });
@@ -33,6 +36,11 @@ function headersAreInvalid(request){
 
 function tokenAndTeamAreInvalid(token, team_id){
   return token !== validToken || team_id !== validTeamId;
+}
+
+function handleCommand(command){
+  var slackCommandRouter = SlackCommandRouter.create();
+  slackCommandRouter.routeCommand(command);
 }
 
 var server = app.listen(3000, function(){

@@ -1,5 +1,8 @@
 var expect = require('expect.js');
 var request = require('supertest');
+var sinon = require('sinon');
+
+var SlackCommandRouter = require('../app/slack-command-router.js');
 
 process.env.TEAM_ID = 'T0001';
 process.env.COMMAND_TOKEN = 'validtoken';
@@ -62,7 +65,6 @@ describe('command app', function(){
         });
         
         describe('with invalidToken', function(){
-          
           beforeEach(function(){
             commandForm.token = 'invalidtoken';
           });
@@ -77,7 +79,6 @@ describe('command app', function(){
         });
         
         describe('with invalidTeam', function(){
-          
           beforeEach(function(){
             commandForm.team_id = 'invalidteamid';
           });
@@ -88,6 +89,34 @@ describe('command app', function(){
               .type('form')
               .send(commandForm)
               .expect(401, testDone);
+          });
+        });
+        
+        describe('with valid teamId and token', function(){
+          var slackCommandRouter;
+          var slackCommandRouterCreateStub;
+          
+          beforeEach(function(){
+            slackCommandRouter = {};
+            slackCommandRouter.routeCommand = sinon.stub();
+            
+            slackCommandRouterCreateStub = sinon.stub(SlackCommandRouter, 'create');
+            slackCommandRouterCreateStub.returns(slackCommandRouter);
+          });
+          
+          afterEach(function(){
+            slackCommandRouterCreateStub.restore();
+          });
+          
+          it('should pass command to commandRouter', function(testDone){
+            request(server)
+              .post('/command')
+              .type('form')
+              .send(commandForm)
+              .end(function(){
+                expect(slackCommandRouter.routeCommand.calledWith(commandForm)).to.be(true);
+                testDone();
+              });
           });
         });
       });
