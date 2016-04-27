@@ -4,6 +4,7 @@ var bodyParser = require('body-parser');
 var app = express();
 app.use(require('express-promise')());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.set('port', (process.env.PORT || 3000));
 
 var SlackCommandRouter = require('./app/slack-command-router.js');
 
@@ -43,8 +44,8 @@ function handleCommand(command){
   slackCommandRouter.routeCommand(command);
 }
 
-var server = app.listen(3000, function(){
-  console.log('example app');
+var server = app.listen(app.get('port'), function(){
+  console.log('twitchy listening');
 });
 
 module.exports = server;
