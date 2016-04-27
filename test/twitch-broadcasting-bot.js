@@ -6,7 +6,6 @@ var TwitchClient = require('../app/twitch-client.js');
 var Bluebird = require('bluebird');
 var redis = require('redis-mock');
 var redisClient = redis.createClient();
-Bluebird.promisifyAll(redis.RedisClient.prototype);
 var StatusRedisStore = require('../app/status-redis-store.js');
 
 var testTwitchBaseURL = 'https://test.api.twitch.tv/kraken/';
