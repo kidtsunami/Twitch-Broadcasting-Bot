@@ -1,12 +1,12 @@
-require('./lib/overload-environment.js');
+require('./app/overload-environment.js');
 var Bluebird = require('bluebird');
 var redis = require('redis');
 Bluebird.promisifyAll(redis.RedisClient.prototype);
 
-var StatusRedisStore = require('./lib/status-redis-store.js');
-var SlackWebhookClient = require('./lib/slack-webhook-client.js');
-var TwitchClient = require('./lib/twitch-client.js');
-var TwitchBroadcastingBot = require('./lib/twitch-broadcasting-bot.js');
+var StatusRedisStore = require('./app/status-redis-store.js');
+var SlackWebhookClient = require('./app/slack-webhook-client.js');
+var TwitchClient = require('./app/twitch-client.js');
+var TwitchBroadcastingBot = require('./app/twitch-broadcasting-bot.js');
 
 var twitchChannelsToCheck = process.env.CHANNELS_TO_CHECK.split(',');
 var slackClient = new SlackWebhookClient(process.env.SLACK_WEBHOOK_URL);
