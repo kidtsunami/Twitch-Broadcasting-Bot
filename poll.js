@@ -14,9 +14,13 @@ var twitchClient = new TwitchClient(process.env.TWITCH_BASE_URL);
 var redisClient = redis.createClient(process.env.REDIS_URL);
 var statusStore = new StatusRedisStore(redisClient);
 
-var twitchBroadcastingBot = new TwitchBroadcastingBot(twitchClient, slackClient, statusStore);
+var twitchBroadcastingBot = new TwitchBroadcastingBot(
+  twitchClient, 
+  slackClient, 
+  statusStore, 
+  twitchChannelsToCheck);
 
-twitchBroadcastingBot.postChangesToSlack(twitchChannelsToCheck).done(cleanUp);
+twitchBroadcastingBot.postChangesToSlack().done(cleanUp);
 
 function cleanUp(){
   redisClient.quit();

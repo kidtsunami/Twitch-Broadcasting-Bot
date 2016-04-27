@@ -1,4 +1,6 @@
 exports.compareStreams = function(beforeStreams, afterStreams){
+  var beforeStreams = beforeStreams || [];
+  var afterStreams = afterStreams || [];
   var beforeStreamChannelIds = streamChannelIdsAsSet(beforeStreams);
   var afterStreamChannelIds = streamChannelIdsAsSet(afterStreams);
   var streamComparison = {

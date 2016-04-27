@@ -15,10 +15,11 @@ var twitchClient = new TwitchClient(testTwitchBaseURL);
 var slackClient = new SlackWebhookClient(testSlackBaseURL + 'webhookpath');
 var statusStore = new StatusRedisStore(redisClient);
 
-var TwitchBroadcastingBot = require('../app/twitch-broadcasting-bot.js');
-var twitchBroadcastingBot = new TwitchBroadcastingBot(twitchClient, slackClient, statusStore);
-
 var channelsToRequest = ['channel1','channel2','channel3','channel4'];
+
+var TwitchBroadcastingBot = require('../app/twitch-broadcasting-bot.js');
+var twitchBroadcastingBot = new TwitchBroadcastingBot(twitchClient, slackClient, statusStore, channelsToRequest);
+
 
 describe('twitchBroadcastingBot', function(){
   beforeEach(flushRedis);
@@ -90,10 +91,10 @@ function confirmStartedBroadcastingToSlack(twitchNock){
   return function(testDone){
     var slackMessage = '{"text":"\\n*channel4* started broadcasting Heroes of the Storm"}';
     var slackNock = nockSlackMessage(slackMessage);
-    twitchBroadcastingBot.postChangesToSlack(channelsToRequest)
+    twitchBroadcastingBot.postChangesToSlack()
       .then(function(){
-        expect(twitchNock.isDone()).to.be.true;
-        expect(slackNock.isDone()).to.be.true;
+        expect(twitchNock.isDone()).to.be(true);
+        expect(slackNock.isDone()).to.be(true);
       })
       .done(testDone);
   }
@@ -103,10 +104,10 @@ function confirmStoppedBroadcastingToSlack(twitchNock){
   return function(testDone){
     var slackMessage = '{"text":"\\n*channel4* stopped broadcasting Heroes of the Storm"}';
     var slackNock = nockSlackMessage(slackMessage);
-    twitchBroadcastingBot.postChangesToSlack(channelsToRequest)
+    twitchBroadcastingBot.postChangesToSlack()
       .then(function(){
-        expect(twitchNock.isDone()).to.be.true;
-        expect(slackNock.isDone()).to.be.true;
+        expect(twitchNock.isDone()).to.be(true);
+        expect(slackNock.isDone()).to.be(true);
       })
       .done(testDone);
   }
@@ -116,7 +117,7 @@ function confirmNothingBroadcastedToSlack(twitchNock){
   return function(testDone){
     twitchBroadcastingBot.postChangesToSlack(channelsToRequest)
       .then(function(){
-        expect(twitchNock.isDone()).to.be.true;
+        expect(twitchNock.isDone()).to.be(true);
       })
       .done(testDone);
   }

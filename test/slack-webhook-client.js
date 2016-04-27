@@ -27,6 +27,6 @@ describe('slack webhook client', function(){
 
 function expectNockIsDone(expectedNock){
   return function(){
-      expect(expectedNock.isDone()).to.be.true;
+      expect(expectedNock.isDone()).to.be(true);
   };
 }
