@@ -7,9 +7,9 @@ function TwitchStatusChecker(twitchClient, slackClient, statusStore, twitchChann
   this.statusStore = statusStore;
   this.twitchChannelsToCheck = twitchChannelsToCheck;
   
-  this.parsePreviousAndCurrentStatus = function(previousStatus, twitchResponse){
+  this.parsePreviousAndCurrentStatus = function(redisStatusResponse, twitchResponse){
     var statuses = {
-      previousStatus: previousStatus,
+      previousStatus: redisStatusResponse,
       currentStatus: twitchResponse.streams
     };
     return statuses;
