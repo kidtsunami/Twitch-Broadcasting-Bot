@@ -7,16 +7,17 @@ function TwitchStatusChecker(twitchClient, slackClient, statusStore, twitchChann
   this.statusStore = statusStore;
   this.twitchChannelsToCheck = twitchChannelsToCheck;
   
-  this.parsePreviousAndCurrentStatus = function(values){
+  this.parsePreviousAndCurrentStatus = function(previousStatus, twitchResponse){
     var statuses = {
-      previousStatus: values[0],
-      currentStatus: values[1].streams
+      previousStatus: previousStatus,
+      currentStatus: twitchResponse.streams
     };
     return statuses;
   }
   
   this.savePreviousStatus = function(statuses){
-    return this.statusStore.setStatus(statuses.currentStatus).then(function() { return statuses; });
+    return this.statusStore.setStatus(statuses.currentStatus)
+      .then(function() { return statuses; });
   }
   
   this.buildMessageFromStatusComparison = function (statuses){
@@ -49,12 +50,12 @@ TwitchStatusChecker.prototype.postChangesToSlack = function(){
 };
 
 TwitchStatusChecker.prototype.getPreviousAndCurrentStatus = function(){
-  return Promise.all([
+  return Promise.join(
       this.statusStore.getStatus(),
-      this.twitchClient.getStreams(this.twitchChannelsToCheck)
-    ])
+      this.twitchClient.getStreams(this.twitchChannelsToCheck),
+      this.parsePreviousAndCurrentStatus
+    )
     .bind(this)
-    .then(this.parsePreviousAndCurrentStatus)
     .then(this.savePreviousStatus);
 }
 
