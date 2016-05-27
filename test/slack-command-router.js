@@ -8,6 +8,7 @@ describe('Slack Command Router', function(){
   
   describe('routeCommand', function(){
     var commandForm;
+    var expectedResponse = { random: 'test response' };
     var pollResponder;
     var pollResponderCreateStub;
     
@@ -26,7 +27,7 @@ describe('Slack Command Router', function(){
       };
       
       pollResponder = {};
-      pollResponder.respondTo = sinon.stub();
+      pollResponder.respondTo = sinon.stub().returns(expectedResponse);
       
       pollResponderCreateStub = sinon.stub(PollResponder, 'create');
       pollResponderCreateStub.returns(pollResponder);
@@ -35,9 +36,10 @@ describe('Slack Command Router', function(){
     it('routes poll to pollResponder', function(){
       command.text = 'poll';
       
-      commandRouter.routeCommand(command);
+      var commandResponse = commandRouter.routeCommand(command);
       
       expect(pollResponder.respondTo.calledWith(command)).to.be(true);
+      expect(commandResponse).to.be(expectedResponse);
     });
   });
 });

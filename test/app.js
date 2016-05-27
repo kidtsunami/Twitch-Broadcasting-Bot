@@ -98,7 +98,7 @@ describe('command app', function(){
           
           beforeEach(function(){
             slackCommandRouter = {};
-            slackCommandRouter.routeCommand = sinon.stub();
+            slackCommandRouter.routeCommand = sinon.stub().returns('testResponse');
             
             slackCommandRouterCreateStub = sinon.stub(SlackCommandRouter, 'create');
             slackCommandRouterCreateStub.returns(slackCommandRouter);
@@ -117,6 +117,14 @@ describe('command app', function(){
                 expect(slackCommandRouter.routeCommand.calledWith(commandForm)).to.be(true);
                 testDone();
               });
+          });
+          
+          it('should respond with routed response', function(testDone){
+            request(server)
+              .post('/command')
+              .type('form')
+              .send(commandForm)
+              .expect('testResponse', testDone);
           });
         });
       });

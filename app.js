@@ -26,8 +26,8 @@ app.post('/command', function(request, response){
   } else if(tokenAndTeamAreInvalid(request.body.token, request.body.team_id)) {
     response.sendStatus(401);  
   } else {
-    handleCommand(request.body);
-    response.sendStatus(200);
+    var commandResponse = handleCommand(request.body);
+    response.status(200).send(commandResponse);
   }
 });
 
@@ -41,7 +41,7 @@ function tokenAndTeamAreInvalid(token, team_id){
 
 function handleCommand(command){
   var slackCommandRouter = SlackCommandRouter.create();
-  slackCommandRouter.routeCommand(command);
+  return slackCommandRouter.routeCommand(command);
 }
 
 var server = app.listen(app.get('port'), function(){
