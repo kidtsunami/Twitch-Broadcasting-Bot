@@ -1,7 +1,6 @@
 var expect = require('expect.js');
 var nock = require('nock');
 
-var SlackWebhookClient = require('../app/slack-webhook-client.js');
 var TwitchClient = require('../app/twitch-client.js');
 var Bluebird = require('bluebird');
 var redis = require('redis-mock');
@@ -9,43 +8,58 @@ var redisClient = redis.createClient();
 var StatusRedisStore = require('../app/status-redis-store.js');
 
 var testTwitchBaseURL = 'https://test.api.twitch.tv/kraken/';
-var testSlackBaseURL = 'https://hooks.slack.com/';
 
 var twitchClient = new TwitchClient(testTwitchBaseURL);
-var slackClient = new SlackWebhookClient(testSlackBaseURL + 'webhookpath');
 var statusStore = new StatusRedisStore(redisClient);
 
 var channelsToRequest = ['channel1','channel2','channel3','channel4'];
 
 var TwitchStatusChecker = require('../app/twitch-status-checker.js');
-var twitchStatusChecker = new TwitchStatusChecker(twitchClient, slackClient, statusStore, channelsToRequest);
+var twitchStatusChecker = new TwitchStatusChecker(twitchClient, statusStore, channelsToRequest);
 
 
 describe('twitchStatusChecker', function(){
   beforeEach(flushRedis);
   afterEach(flushRedis);
   
-  describe('postChangesToSlack', testPostChangesToSlack);
+  describe('getPreviousAndCurrentStatus', testGetPreviousAndCurrentStatus);
 });
 
 function flushRedis(){
   redisClient.flushdb();
 }
 
-function testPostChangesToSlack(){
+function testGetPreviousAndCurrentStatus(){
   it('exists as a public method', function(){
-    expect(typeof twitchStatusChecker.postChangesToSlack).to.eql('function');
+    expect(typeof twitchStatusChecker.getPreviousAndCurrentStatus).to.eql('function');
   });
   
   describe('when statusStore is empty', function(){
     describe('when channel 4 is broadcasting', function(){
       var twitchNock = nockTwitchIsBroadcastingStream();
-      it('posts started broadcasting to slack', confirmStartedBroadcastingToSlack(twitchNock));
+      it('has channel 4 is only in currentStatus', function(testDone){
+        twitchStatusChecker.getPreviousAndCurrentStatus()
+          .then(function(statuses){
+            expect(twitchNock.isDone()).to.be(true);
+            expect(statuses.currentStatus.length).to.be(1);
+            expect(statuses.currentStatus[0].channel.display_name).to.be('channel4');
+            expect(statuses.previousStatus.length).to.be(0);
+          })
+          .done(testDone);
+      });
     });
     
     describe('when channel 4 is not broadcasting', function(){
       var twitchNock = nockTwitchIsNotBroadcasting();
-      it('posts nothing to slack', confirmNothingBroadcastedToSlack(twitchNock));
+      it('has no streams in current or previous status', function(testDone){
+        twitchStatusChecker.getPreviousAndCurrentStatus()
+          .then(function(statuses){
+            expect(twitchNock.isDone()).to.be(true);
+            expect(statuses.currentStatus.length).to.be(0);
+            expect(statuses.previousStatus.length).to.be(0);
+          })
+          .done(testDone);
+      });
     });
   });
   
@@ -55,12 +69,31 @@ function testPostChangesToSlack(){
     
     describe('when channel 4 is broadcasting', function(){
       var twitchNock = nockTwitchIsBroadcastingStream();
-      it('posts nothing to slack', confirmNothingBroadcastedToSlack(twitchNock));
+      it('has no streams current or previous status', function(testDone){
+        twitchStatusChecker.getPreviousAndCurrentStatus()
+          .then(function(statuses){
+            expect(twitchNock.isDone()).to.be(true);
+            expect(statuses.currentStatus.length).to.be(1);
+            expect(statuses.currentStatus[0].channel.display_name).to.be('channel4');
+            expect(statuses.previousStatus.length).to.be(1);
+            expect(statuses.previousStatus[0].channel.display_name).to.be('channel4');
+          })
+          .done(testDone);
+      });
     });
     
     describe('when channel 4 is not broadcasting', function(){
       var twitchNock = nockTwitchIsNotBroadcasting();
-      it('posts stopped broadcasting to slack', confirmStoppedBroadcastingToSlack(twitchNock));
+      it('has channel 4 is only in previousStatus', function(testDone){
+        twitchStatusChecker.getPreviousAndCurrentStatus()
+          .then(function(statuses){
+            expect(twitchNock.isDone()).to.be(true);
+            expect(statuses.previousStatus.length).to.be(1);
+            expect(statuses.previousStatus[0].channel.display_name).to.be('channel4');
+            expect(statuses.currentStatus.length).to.be(0);
+          })
+          .done(testDone);
+      });
     });
   });
 }
@@ -79,48 +112,6 @@ function nockTwitchIsNotBroadcasting(){
   return nock(testTwitchBaseURL)
           .get(requestPath)
           .replyWithFile(200, __dirname + responseFile);
-}
-
-function nockSlackMessage(message){
-  return nock(testSlackBaseURL)
-          .post('/webhookpath', message)
-          .reply(200, 'OK');
-}
-
-function confirmStartedBroadcastingToSlack(twitchNock){
-  return function(testDone){
-    var slackMessage = '{"text":"\\n*channel4* started broadcasting Heroes of the Storm"}';
-    var slackNock = nockSlackMessage(slackMessage);
-    twitchStatusChecker.postChangesToSlack()
-      .then(function(){
-        expect(twitchNock.isDone()).to.be(true);
-        expect(slackNock.isDone()).to.be(true);
-      })
-      .done(testDone);
-  }
-}
-
-function confirmStoppedBroadcastingToSlack(twitchNock){
-  return function(testDone){
-    var slackMessage = '{"text":"\\n*channel4* stopped broadcasting Heroes of the Storm"}';
-    var slackNock = nockSlackMessage(slackMessage);
-    twitchStatusChecker.postChangesToSlack()
-      .then(function(){
-        expect(twitchNock.isDone()).to.be(true);
-        expect(slackNock.isDone()).to.be(true);
-      })
-      .done(testDone);
-  }
-}
-
-function confirmNothingBroadcastedToSlack(twitchNock){
-  return function(testDone){
-    twitchStatusChecker.postChangesToSlack(channelsToRequest)
-      .then(function(){
-        expect(twitchNock.isDone()).to.be(true);
-      })
-      .done(testDone);
-  }
 }
 
 function withChannel4Broadcasting(runTest){

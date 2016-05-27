@@ -7,6 +7,8 @@ var StatusRedisStore = require('./app/status-redis-store.js');
 var SlackWebhookClient = require('./app/slack-webhook-client.js');
 var TwitchClient = require('./app/twitch-client.js');
 var TwitchStatusChecker = require('./app/twitch-status-checker.js');
+var streamComparer = require('./app/stream-comparer.js');
+var slackMessageFormatter = require('./app/slack-message-formatter.js');
 
 var twitchChannelsToCheck = process.env.CHANNELS_TO_CHECK.split(',');
 var slackClient = new SlackWebhookClient(process.env.SLACK_WEBHOOK_URL);
@@ -16,11 +18,18 @@ var statusStore = new StatusRedisStore(redisClient);
 
 var twitchStatusChecker = new TwitchStatusChecker(
   twitchClient,
-  slackClient,
   statusStore,
   twitchChannelsToCheck);
-
-twitchStatusChecker.postChangesToSlack().done(cleanUp);
+  
+var postMessagePromise = function(message){
+  return slackClient.postMessage(message);
+}
+  
+twitchStatusChecker.getPreviousAndCurrentStatus()
+  .then(streamComparer.compareStreams)
+  .then(slackMessageFormatter.formatStatusChange)
+  .then(postMessagePromise)
+  .done(cleanUp);
 
 function cleanUp(){
   redisClient.quit();
