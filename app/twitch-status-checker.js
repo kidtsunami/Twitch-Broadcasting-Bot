@@ -15,7 +15,7 @@ function TwitchStatusChecker(twitchClient, statusStore, twitchChannelsToCheck){
   
   this.savePreviousStatus = function(statuses){
     return this.statusStore.setStatus(statuses.currentStatus)
-      .then(statuses);
+      .then(function () { return statuses });
   }
 }
 
