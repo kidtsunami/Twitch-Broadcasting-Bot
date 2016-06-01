@@ -1,4 +1,4 @@
-var PollResponder = require('./responders/poll-responder.js');
+var pollResponder = require('./responders/poll-responder.js');
 
 SlackCommandRouter.create = function(){
   return new SlackCommandRouter();
@@ -14,7 +14,7 @@ SlackCommandRouter.prototype.routeCommand = function(command){
   
   switch(responderId){
     case 'poll':
-      responder = PollResponder.create();
+      responder = pollResponder;
       break;
   }
   

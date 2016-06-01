@@ -26,8 +26,10 @@ app.post('/command', function(request, response){
   } else if(tokenAndTeamAreInvalid(request.body.token, request.body.team_id)) {
     response.sendStatus(401);  
   } else {
-    var commandResponse = handleCommand(request.body);
-    response.status(200).send(commandResponse);
+    var commandPromise = handleCommand(request.body);
+    commandPromise.then(function(commandResponse) {
+      response.status(200).send(commandResponse);  
+    });
   }
 });
 
@@ -45,7 +47,7 @@ function handleCommand(command){
 }
 
 var server = app.listen(app.get('port'), function(){
-  console.log('twitchy listening');
+  console.log('twitchy listening on ' + app.get('port'));
 });
 
 module.exports = server;

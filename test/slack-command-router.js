@@ -1,7 +1,8 @@
 var sinon = require('sinon');
 var expect = require('expect.js');
+var Promise = require('bluebird');
 
-var PollResponder = require('../app/responders/poll-responder.js');
+var pollResponder = require('../app/responders/poll-responder.js');
 
 describe('Slack Command Router', function(){
   var commandRouter = require('../app/slack-command-router.js').create();
@@ -9,8 +10,7 @@ describe('Slack Command Router', function(){
   describe('routeCommand', function(){
     var commandForm;
     var expectedResponse = { random: 'test response' };
-    var pollResponder;
-    var pollResponderCreateStub;
+    var pollResponderStub;
     
     beforeEach(function(){
       command = {
@@ -26,20 +26,20 @@ describe('Slack Command Router', function(){
         response_url: 'https://hooks.slack.com/commands/1234/5678' 
       };
       
-      pollResponder = {};
-      pollResponder.respondTo = sinon.stub().returns(expectedResponse);
-      
-      pollResponderCreateStub = sinon.stub(PollResponder, 'create');
-      pollResponderCreateStub.returns(pollResponder);
+      pollResponderStub = sinon.stub(pollResponder, 'respondTo').returns(Promise.resolve(expectedResponse));
     });
     
-    it('routes poll to pollResponder', function(){
+    it('routes poll to pollResponder', function(testDone){
       command.text = 'poll';
       
-      var commandResponse = commandRouter.routeCommand(command);
+      var commandPromise = commandRouter.routeCommand(command);
       
-      expect(pollResponder.respondTo.calledWith(command)).to.be(true);
-      expect(commandResponse).to.be(expectedResponse);
+      
+      commandPromise.then(function(commandResponse) {
+        expect(pollResponder.respondTo.calledWith(command)).to.be(true);
+        expect(commandResponse).to.be(expectedResponse);
+      })
+        .done(testDone);
     });
   });
 });

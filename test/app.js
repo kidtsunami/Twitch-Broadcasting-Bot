@@ -98,7 +98,7 @@ describe('command app', function(){
           
           beforeEach(function(){
             slackCommandRouter = {};
-            slackCommandRouter.routeCommand = sinon.stub().returns('testResponse');
+            slackCommandRouter.routeCommand = sinon.stub().returns(Promise.resolve('testResponse'));
             
             slackCommandRouterCreateStub = sinon.stub(SlackCommandRouter, 'create');
             slackCommandRouterCreateStub.returns(slackCommandRouter);
