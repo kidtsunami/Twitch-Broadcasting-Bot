@@ -1,5 +1,9 @@
 var request = require('request-promise');
 
+SlackWebHookClient.Create = function(webhookURL){
+  return new SlackWebHookClient(webhookURL);
+}
+
 function SlackWebHookClient(webhookURL) {
   this.webhookURL = webhookURL;
 }

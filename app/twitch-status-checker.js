@@ -1,5 +1,9 @@
 var Promise = require("bluebird");
 
+TwitchStatusChecker.Create = function(twitchClient, statusStore, twitchChannelsToCheck){
+  return new TwitchStatusChecker(twitchClient, statusStore, twitchChannelsToCheck);
+}
+
 function TwitchStatusChecker(twitchClient, statusStore, twitchChannelsToCheck){
   this.twitchClient = twitchClient;
   this.statusStore = statusStore;

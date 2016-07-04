@@ -9,13 +9,13 @@ var StatusRedisStore = require('../app/status-redis-store.js');
 
 var testTwitchBaseURL = 'https://test.api.twitch.tv/kraken/';
 
-var twitchClient = new TwitchClient(testTwitchBaseURL);
-var statusStore = new StatusRedisStore(redisClient);
+var twitchClient = TwitchClient.Create(testTwitchBaseURL);
+var statusStore = StatusRedisStore.Create(redisClient);
 
 var channelsToRequest = ['channel1','channel2','channel3','channel4'];
 
 var TwitchStatusChecker = require('../app/twitch-status-checker.js');
-var twitchStatusChecker = new TwitchStatusChecker(twitchClient, statusStore, channelsToRequest);
+var twitchStatusChecker = TwitchStatusChecker.Create(twitchClient, statusStore, channelsToRequest);
 
 
 describe('twitchStatusChecker', function(){

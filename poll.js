@@ -11,12 +11,12 @@ var streamComparer = require('./app/stream-comparer.js');
 var slackMessageFormatter = require('./app/slack-message-formatter.js');
 
 var twitchChannelsToCheck = process.env.CHANNELS_TO_CHECK.split(',');
-var slackClient = new SlackWebhookClient(process.env.SLACK_WEBHOOK_URL);
-var twitchClient = new TwitchClient(process.env.TWITCH_BASE_URL, process.env.TWITCH_CLIENT_ID);
+var slackClient = SlackWebhookClient.Create(process.env.SLACK_WEBHOOK_URL);
+var twitchClient = TwitchClient.Create(process.env.TWITCH_BASE_URL, process.env.TWITCH_CLIENT_ID);
 var redisClient = redis.createClient(process.env.REDIS_URL);
-var statusStore = new StatusRedisStore(redisClient);
+var statusStore = StatusRedisStore.Create(redisClient);
 
-var twitchStatusChecker = new TwitchStatusChecker(
+var twitchStatusChecker = TwitchStatusChecker.Create(
   twitchClient,
   statusStore,
   twitchChannelsToCheck);

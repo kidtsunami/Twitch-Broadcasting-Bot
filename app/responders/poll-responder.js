@@ -10,18 +10,21 @@ var TwitchStatusChecker = require('../twitch-status-checker.js');
 var streamComparer = require('../stream-comparer.js');
 var slackMessageFormatter = require('../slack-message-formatter.js');
 
-var twitchChannelsToCheck = process.env.CHANNELS_TO_CHECK.split(',');
-var slackClient = new SlackWebhookClient(process.env.SLACK_WEBHOOK_URL);
-var twitchClient = new TwitchClient(process.env.TWITCH_BASE_URL, process.env.TWITCH_CLIENT_ID);
 
 module.exports.respondTo = function(command){
+  var twitchChannelsToCheck = process.env.CHANNELS_TO_CHECK.split(',');
+  var slackClient = SlackWebhookClient.Create(process.env.SLACK_WEBHOOK_URL);
+  var twitchClient = TwitchClient.Create(process.env.TWITCH_BASE_URL, process.env.TWITCH_CLIENT_ID);
   var redisClient = redis.createClient(process.env.REDIS_URL);
-  var statusStore = new StatusRedisStore(redisClient);  
-  var twitchStatusChecker = new TwitchStatusChecker(twitchClient, statusStore, twitchChannelsToCheck);
+  var statusStore = StatusRedisStore.Create(redisClient);  
+  var twitchStatusChecker = TwitchStatusChecker.Create(twitchClient, statusStore, twitchChannelsToCheck);
   
   return twitchStatusChecker.getPreviousAndCurrentStatus()
     .then(streamComparer.compareStreams)
     .then(slackMessageFormatter.formatStatusChange)
+    .catch(function(){
+      redisClient.quit();
+    })
     .then(function(status) {
       redisClient.quit();
       return status;

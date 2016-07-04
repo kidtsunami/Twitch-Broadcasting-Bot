@@ -1,6 +1,10 @@
 var request = require('request-promise');
 var urlJoin = require('url-join');
 
+TwitchClient.Create = function(baseURL, clientId){
+  return new TwitchClient(baseURL, clientId);
+}
+
 function TwitchClient(baseURL, clientId){
   this.baseURL = baseURL;
   this.clientId = clientId;
