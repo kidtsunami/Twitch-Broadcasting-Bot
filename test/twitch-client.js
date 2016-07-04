@@ -6,7 +6,7 @@ var testBaseURL = 'https://test.api.twitch.tv/kraken/';
 var testClientId = 'testclientid'
 var testBaseOptions = { reqheaders: { 'Client-ID': testClientId } };
 describe("twitch client", function(){
-  var twitchClient = new TwitchClient(testBaseURL, testClientId);
+  var twitchClient = TwitchClient.Create(testBaseURL, testClientId);
   describe(".getStream", function(){
     it("exists as a public method on twitchClient", function(){
       expect(typeof twitchClient.getStream).to.eql('function'); 

@@ -5,7 +5,7 @@ var redisClient = redis.createClient();
 var Bluebird = require('bluebird');
 
 var basicData = { testData: 'blahhhh' };
-var statusRedisStore = new StatusRedisStore(redisClient);
+var statusRedisStore = StatusRedisStore.Create(redisClient);
 
 Bluebird.promisifyAll(redis.RedisClient.prototype);
 
