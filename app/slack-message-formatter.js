@@ -1,5 +1,3 @@
-var streamComparer = require('./stream-comparer.js');
-
 exports.formatStatusChange = function (streamComparison){
   var statusMessages = [];
 

@@ -1,3 +1,4 @@
+/* eslint-env mocha */
 var expect = require('expect.js');
 
 var slackMessageFormater = require('../app/slack-message-formatter.js');
