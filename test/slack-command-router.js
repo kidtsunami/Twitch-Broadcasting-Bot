@@ -1,3 +1,4 @@
+/* eslint-env mocha */
 var sinon = require('sinon');
 var expect = require('expect.js');
 var Promise = require('bluebird');
@@ -8,7 +9,7 @@ describe('Slack Command Router', function(){
   var commandRouter = require('../app/slack-command-router.js').create();
   
   describe('routeCommand', function(){
-    var commandForm;
+    var command;
     var expectedResponse = { random: 'test response' };
     var pollResponderStub;
     
@@ -27,6 +28,10 @@ describe('Slack Command Router', function(){
       };
       
       pollResponderStub = sinon.stub(pollResponder, 'respondTo').returns(Promise.resolve(expectedResponse));
+    });
+
+    afterEach(function() {
+      pollResponderStub.restore();
     });
     
     it('routes poll to pollResponder', function(testDone){

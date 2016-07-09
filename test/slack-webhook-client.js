@@ -1,3 +1,4 @@
+/* eslint-env mocha */
 var SlackWebhookClient = require('../app/slack-webhook-client.js');
 var expect = require('expect.js');
 var nock = require('nock');

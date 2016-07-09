@@ -1,3 +1,4 @@
+/* eslint-env mocha */
 var expect = require('expect.js');
 var streamComparer = require('../app/stream-comparer.js');
 

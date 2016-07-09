@@ -1,3 +1,4 @@
+/* eslint-env mocha */
 var expect = require('expect.js');
 var request = require('supertest');
 var sinon = require('sinon');
