@@ -1,3 +1,4 @@
+/* eslint-env mocha */
 var expect = require('expect.js');
 var StatusRedisStore = require('../app/status-redis-store.js');
 var redis = require('redis-mock');
