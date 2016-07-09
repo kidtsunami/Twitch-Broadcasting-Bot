@@ -83,8 +83,7 @@ describe('pollResponder', function(){
         expect(formatStatusChangeStub.calledWith(2)).to.be(true);
         expect(redisQuitStub.called).to.be(true);
         testDone();
-      })
-
+      });
     });
   });
 });
