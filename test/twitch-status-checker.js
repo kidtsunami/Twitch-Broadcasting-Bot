@@ -1,8 +1,8 @@
+/* eslint-env mocha */
 var expect = require('expect.js');
 var nock = require('nock');
 
 var TwitchClient = require('../app/twitch-client.js');
-var Bluebird = require('bluebird');
 var redis = require('redis-mock');
 var redisClient = redis.createClient();
 var StatusRedisStore = require('../app/status-redis-store.js');
