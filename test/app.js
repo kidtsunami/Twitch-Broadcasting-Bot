@@ -47,7 +47,6 @@ describe('command app', function(){
         });
       });
       describe('with valid headers', function(){
-        var contentType = 'application/x-www-form-urlencoded';
         var commandForm;
         
         beforeEach(function(){
