@@ -1,3 +1,4 @@
+/* eslint-env mocha */
 var TwitchClient = require('../app/twitch-client.js');
 var expect = require('expect.js');
 var nock = require('nock');
