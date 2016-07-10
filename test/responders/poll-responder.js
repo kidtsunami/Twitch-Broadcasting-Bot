@@ -8,7 +8,7 @@ var StatusRedisStore = require('../../app/status-redis-store.js');
 var TwitchClient = require('../../app/twitch-client.js');
 var TwitchStatusChecker = require('../../app/twitch-status-checker.js');
 var streamComparer = require('../../app/stream-comparer.js');
-var slackMessageFormatter = require('../../app/slack-message-formatter.js');
+var streamMessageFormatter = require('../../app/stream-message-formatter.js');
 
 process.env.CHANNELS_TO_CHECK = 'channel7,channel3,channel10';
 process.env.TWITCH_BASE_URL = 'testtwitchbaseURL';
@@ -93,7 +93,7 @@ function stubProcessMethods(){
     getPreviousAndCurrentStatusStub = sinon.stub(mockTwitchStatusChecker, 'getPreviousAndCurrentStatus').returns(Promise.resolve(1));
 
     compareStreamsStub = sinon.stub(streamComparer, 'compareStreams').returns(Promise.resolve(2));
-    formatStatusChangeStub = sinon.stub(slackMessageFormatter, 'formatStatusChange').returns(Promise.resolve(3));
+    formatStatusChangeStub = sinon.stub(streamMessageFormatter, 'formatStatusChange').returns(Promise.resolve(3));
 
     mockRedisClient = redisMock.createClient();
     redisQuitStub = sinon.stub(mockRedisClient, 'quit');

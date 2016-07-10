@@ -8,7 +8,7 @@ var SlackWebhookClient = require('./app/slack-webhook-client.js');
 var TwitchClient = require('./app/twitch-client.js');
 var TwitchStatusChecker = require('./app/twitch-status-checker.js');
 var streamComparer = require('./app/stream-comparer.js');
-var slackMessageFormatter = require('./app/slack-message-formatter.js');
+var streamMessageFormatter = require('./app/stream-message-formatter.js');
 
 var twitchChannelsToCheck = process.env.CHANNELS_TO_CHECK.split(',');
 var slackClient = SlackWebhookClient.Create(process.env.SLACK_WEBHOOK_URL);
@@ -27,7 +27,7 @@ var postMessagePromise = function(message){
   
 twitchStatusChecker.getPreviousAndCurrentStatus()
   .then(streamComparer.compareStreams)
-  .then(slackMessageFormatter.formatStatusChange)
+  .then(streamMessageFormatter.formatStatusChange)
   .then(postMessagePromise)
   .done(cleanUp);
 

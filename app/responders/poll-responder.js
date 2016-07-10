@@ -7,7 +7,7 @@ var StatusRedisStore = require('../status-redis-store.js');
 var TwitchClient = require('../twitch-client.js');
 var TwitchStatusChecker = require('../twitch-status-checker.js');
 var streamComparer = require('../stream-comparer.js');
-var slackMessageFormatter = require('../slack-message-formatter.js');
+var streamMessageFormatter = require('../stream-message-formatter.js');
 
 
 module.exports.respondTo = function(command){
@@ -20,7 +20,7 @@ module.exports.respondTo = function(command){
   
   return twitchStatusChecker.getPreviousAndCurrentStatus()
     .then(streamComparer.compareStreams)
-    .then(slackMessageFormatter.formatStatusChange)
+    .then(streamMessageFormatter.formatStatusChange)
     .catch(function(){
       redisClient.quit();
     })

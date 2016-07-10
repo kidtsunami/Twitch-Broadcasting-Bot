@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 var expect = require('expect.js');
 
-var slackMessageFormater = require('../app/slack-message-formatter.js');
+var slackMessageFormater = require('../app/stream-message-formatter.js');
 
 var channel4 = {
   "_id": 19998280624,
@@ -82,7 +82,6 @@ describe('slackMessageFormater', function(){
       it('prints message for channel2', function() {
         var message = slackMessageFormater.formatStatusChange(streamComparison);
         expect(message).to.eql({ text: '*channel2* started broadcasting Dutch Archer' });
-        expect(message).to.be.true;
       });
     });
     
@@ -95,7 +94,6 @@ describe('slackMessageFormater', function(){
       it('prints message for channel2 and channel4', function() {
         var message = slackMessageFormater.formatStatusChange(streamComparison);
         expect(message).to.eql({ text: '*channel2* started broadcasting Dutch Archer\n*channel4* started broadcasting Heroes of the Storm' });
-        expect(message).to.be.true;
       });
     });
     
@@ -108,7 +106,6 @@ describe('slackMessageFormater', function(){
       it('prints message for channel2 and channel4', function() {
         var message = slackMessageFormater.formatStatusChange(streamComparison);
         expect(message).to.eql({ text: '*channel2* started broadcasting Dutch Archer\n*channel4* stopped broadcasting Heroes of the Storm' });
-        expect(message).to.be.true;
       });
     });
     
@@ -121,7 +118,6 @@ describe('slackMessageFormater', function(){
       it('prints message for channel2 and channel4', function() {
         var message = slackMessageFormater.formatStatusChange(streamComparison);
         expect(message).to.eql({ text: '*channel2* stopped broadcasting Dutch Archer\n*channel4* stopped broadcasting Heroes of the Storm' });
-        expect(message).to.be.true;
       });
     });
     
@@ -134,7 +130,6 @@ describe('slackMessageFormater', function(){
       it('prints message for channel2 and channel4', function() {
         var message = slackMessageFormater.formatStatusChange(streamComparison);
         expect(message).to.eql({ text: '*channel2* stopped broadcasting Dutch Archer' });
-        expect(message).to.be.true;
       });
     });
   });
