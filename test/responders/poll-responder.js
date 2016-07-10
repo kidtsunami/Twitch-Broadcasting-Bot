@@ -85,6 +85,41 @@ describe('pollResponder', function(){
         testDone();
       });
     });
+
+    describe('with a null status (no changes)', function() {
+      beforeEach(function(){
+        formatStatusChangeStub.returns(Promise.resolve(null));
+      });
+
+      it('formats ephemeral response', function(testDone) {
+        pollResponder.respondTo(null).then(function (result) {
+          expect(result.response_type).to.be('ephemeral');
+          expect(getPreviousAndCurrentStatusStub.called).to.be(true);
+          expect(compareStreamsStub.calledWith(1)).to.be(true);
+          expect(formatStatusChangeStub.calledWith(2)).to.be(true);
+          expect(redisQuitStub.called).to.be(true);
+          testDone();
+        });
+      });
+    });
+
+    describe('with a populated status', function() {
+      beforeEach(function(){
+        formatStatusChangeStub.returns(Promise.resolve({ text: 'valid status' }));
+      });
+
+      it('formats in_channel response', function(testDone) {
+        pollResponder.respondTo(null).then(function (result) {
+          expect(result.response_type).to.be('in_channel');
+          expect(result.text).to.be('valid status');
+          expect(getPreviousAndCurrentStatusStub.called).to.be(true);
+          expect(compareStreamsStub.calledWith(1)).to.be(true);
+          expect(formatStatusChangeStub.calledWith(2)).to.be(true);
+          expect(redisQuitStub.called).to.be(true);
+          testDone();
+        });
+      });
+    });
   });
 });
 

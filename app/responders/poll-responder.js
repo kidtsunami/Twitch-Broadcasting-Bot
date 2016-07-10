@@ -21,11 +21,33 @@ module.exports.respondTo = function(command){
   return twitchStatusChecker.getPreviousAndCurrentStatus()
     .then(streamComparer.compareStreams)
     .then(streamMessageFormatter.formatStatusChange)
-    .catch(function(){
-      redisClient.quit();
-    })
     .then(function(status) {
       redisClient.quit();
-      return status;
+      return formatStatusResponse(status);
+    })
+    .catch(function(error){
+      redisClient.quit();
+      return formatErrorResponse(error);
     });
+}
+
+function formatErrorResponse(error){
+  return {
+    "response_type": "ephemeral",
+    "text": error
+  };
+}
+
+function formatStatusResponse(status){
+  var statusMessage;
+  if(status === null){
+    statusMessage = {
+      "response_type": "ephemeral",
+      "text": "Nothing's changed."
+    };
+  } else {
+    statusMessage = status;
+    status.response_type = "in_channel"; 
+  }
+  return statusMessage;
 }
