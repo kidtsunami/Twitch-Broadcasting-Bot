@@ -1,3 +1,4 @@
+/* eslint-env mocha */
 var expect = require('expect.js');
 var StatusRedisStore = require('../app/status-redis-store.js');
 var redis = require('redis-mock');
@@ -5,7 +6,7 @@ var redisClient = redis.createClient();
 var Bluebird = require('bluebird');
 
 var basicData = { testData: 'blahhhh' };
-var statusRedisStore = new StatusRedisStore(redisClient);
+var statusRedisStore = StatusRedisStore.Create(redisClient);
 
 Bluebird.promisifyAll(redis.RedisClient.prototype);
 

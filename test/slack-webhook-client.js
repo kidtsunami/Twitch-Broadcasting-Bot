@@ -1,9 +1,10 @@
+/* eslint-env mocha */
 var SlackWebhookClient = require('../app/slack-webhook-client.js');
 var expect = require('expect.js');
 var nock = require('nock');
 
 describe('slack webhook client', function(){
-  var client = new SlackWebhookClient('https://hooks.slack.com/webhookpath');
+  var client = SlackWebhookClient.Create('https://hooks.slack.com/webhookpath');
   describe('.postMessage', function(){
     it('exists as a public method on slackClient', function(){
       expect(typeof client.postMessage).to.be('function'); 
@@ -27,6 +28,6 @@ describe('slack webhook client', function(){
 
 function expectNockIsDone(expectedNock){
   return function(){
-      expect(expectedNock.isDone()).to.be.true;
+      expect(expectedNock.isDone()).to.be(true);
   };
 }

@@ -1,10 +1,13 @@
+/* eslint-env mocha */
 var TwitchClient = require('../app/twitch-client.js');
 var expect = require('expect.js');
 var nock = require('nock');
 
 var testBaseURL = 'https://test.api.twitch.tv/kraken/';
+var testClientId = 'testclientid'
+var testBaseOptions = { reqheaders: { 'Client-ID': testClientId } };
 describe("twitch client", function(){
-  var twitchClient = new TwitchClient(testBaseURL);
+  var twitchClient = TwitchClient.Create(testBaseURL, testClientId);
   describe(".getStream", function(){
     it("exists as a public method on twitchClient", function(){
       expect(typeof twitchClient.getStream).to.eql('function'); 
@@ -12,7 +15,7 @@ describe("twitch client", function(){
     
     describe("when broadcasting", function() {
       var nockBroadcastingStream = function(){
-        nock(testBaseURL)
+        nock(testBaseURL, testBaseOptions)
           .get('/streams/channel1')
           .replyWithFile(200, __dirname + '/responses/twitch-client/getStreamIsBroadcasting.json');
       }
@@ -39,7 +42,7 @@ describe("twitch client", function(){
     
     describe("when not broadcasting", function() {
       var nockNonBroadcastingStream = function(){
-        nock(testBaseURL)
+        nock(testBaseURL, testBaseOptions)
           .get('/streams/channel1')
           .replyWithFile(200, __dirname + '/responses/twitch-client/getStreamIsNotBroadcasting.json');
       }
@@ -67,7 +70,7 @@ describe("twitch client", function(){
     describe("when one channel is broadcasting", function(){
       var channelsToRequest = ['channel1','channel2','channel3'];
       var nockOneBroadcastingStreams = function(){
-          nock(testBaseURL)
+          nock(testBaseURL, testBaseOptions)
               .get('/streams?channel=channel1,channel2,channel3')
               .replyWithFile(200, __dirname + '/responses/twitch-client/getStreamsOneIsBroadcasting.json');
       } 

@@ -1,3 +1,7 @@
+StatusRedisStore.Create = function(redisClient){
+  return new StatusRedisStore(redisClient);
+}
+
 function StatusRedisStore(redisClient){
   this.redisClient = redisClient;
 }

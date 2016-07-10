@@ -1,3 +1,4 @@
+/* eslint-env mocha */
 var expect = require('expect.js');
 var streamComparer = require('../app/stream-comparer.js');
 
@@ -21,14 +22,18 @@ function testCompareStreamsWithValidData(){
   var stream3 = { channel: { _id: 3, display_name: 'stream3' } };
   var beforeStreams = [stream1, stream2];
   var afterStreams = [stream2, stream3];
+  var streamStatuses = {
+    previousStatus: beforeStreams,
+    currentStatus: afterStreams
+  }
   
   it("returns streamComparison", function(){
-    var streamComparison = streamComparer.compareStreams(beforeStreams, afterStreams);
+    var streamComparison = streamComparer.compareStreams(streamStatuses);
     expect(streamComparison).to.be.ok(); 
   });
 
   it("has stopped streams", function(){
-    var streamComparison = streamComparer.compareStreams(beforeStreams, afterStreams);
+    var streamComparison = streamComparer.compareStreams(streamStatuses);
 
     expect(typeof [streamComparison.stoppedStreams]).to.eql('object');
     expect(streamComparison.stoppedStreams.length).to.eql(1);
@@ -36,7 +41,7 @@ function testCompareStreamsWithValidData(){
   });
 
   it("has started streams", function(){
-    var streamComparison = streamComparer.compareStreams(beforeStreams, afterStreams);
+    var streamComparison = streamComparer.compareStreams(streamStatuses);
 
     expect(typeof streamComparison.startedStreams).to.eql('object');
     expect(streamComparison.startedStreams.length).to.eql(1);
